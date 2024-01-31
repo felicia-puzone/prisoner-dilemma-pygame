@@ -1,6 +1,11 @@
 import numpy as np
+from enum import Enum
+class Init_type(Enum):
+    RANDOM = 1
+
+
 class GridEnvironment:
-    def __init__(self, grid_size):
+    def __init__(self, grid_size, list_agents, init_type):
         """
         :param grid_size: A (W, H) tuple corresponding to the grid dimensions. Better if H=W
         """

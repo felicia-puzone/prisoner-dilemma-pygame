@@ -3,6 +3,7 @@ import os
 from pygame import image, Rect, transform
 from pygame.sprite import DirtySprite
 
+TILE_SIZE = 100
 
 entity_path = os.path.join(os.getcwd(), "assets")
 
@@ -11,7 +12,6 @@ sprite_dict = {
     "b_agent": os.path.join(entity_path, "red_agent.png"),
 }
 
-TILE_SIZE = 0
 
 
 def load_img(path):
@@ -30,13 +30,12 @@ def get_gui_window_icon():
 
 
 class Entity(DirtySprite):
-    def __init__(self, entity_type, location, tile_size):
+    def __init__(self, entity_type, location):
         """
         :param entity_type: String specifying which sprite to load from the sprite dictionary (sprite_dict)
         :param location: [X, Y] location of the sprite. We calculate the pixel position by multiplying it by cell_sizes
         """
         DirtySprite.__init__(self)
-        TILE_SIZE = tile_size
         self._image = transform.scale(  # Load, scale and record the entity sprite
             load_img(sprite_dict[entity_type]), (TILE_SIZE, TILE_SIZE)
         )

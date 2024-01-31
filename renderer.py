@@ -11,7 +11,7 @@ TILE_SIZE = 100
 
 
 class GameRenderer:
-    def __init__(self, grid, window_title):
+    def __init__(self, grid_size, window_title):
         """
         :param grid: Class-based representation of the game state. Feeds all the information necessary to the renderer
         :param window_title: What we set as the window caption
@@ -22,9 +22,9 @@ class GameRenderer:
         pg.display.set_caption(window_title)  # set the window caption
 
         self._clock = pg.time.Clock()  # create clock object
-        self._grid = grid
+        self._grid = grid_size
         self._screen = None  # temp screen attribute
-        grid_size = grid.GRID_DIMENSIONS
+        grid_size = grid_size
         game_surface_size = TILE_SIZE * grid_size[0] + 2, TILE_SIZE * grid_size[1] + 2
 
         self._screen_size = game_surface_size
@@ -46,10 +46,8 @@ class GameRenderer:
         self._entity_layer = pg.Surface(game_surface_size).convert_alpha()
         self._entity_layer.fill(CLEAR)
         #Create the entities (agents)
+        self.list_entities = []
 
-        self._agent1 = Entity(
-            entity_type="a_agent", location=(2, 2), tile_size=TILE_SIZE
-        )
         self._draw_entities()
 
 
@@ -96,14 +94,14 @@ class GameRenderer:
                 2
             )
 
-
     def _draw_entities(self):
         # Agents
-        self._entity_layer.blit(
-            self._agent1.IMAGE, (self._agent1.rect.left, self._agent1.rect.top)
-        )
+        for entity in self.list_entities:
+            self._entity_layer.blit(
+                entity.IMAGE, (entity.rect.left, entity.rect.top))
 
-
+    def update(self):
+        self._draw_entities()
 
     """
     Properties
@@ -114,15 +112,15 @@ class GameRenderer:
 
     @property
     def SCREEN_W(self):
-        return int(self._grid.GRID_W * TILE_SIZE + 4)
+        return int(self._grid[1] * TILE_SIZE + 4)
 
     @property
     def SCREEN_H(self):
-        return int(self.GRID_H * TILE_SIZE + 4)
+        return int(self._grid[0] * TILE_SIZE + 4)
     @property
     def GRID_W(self):
-        return self._grid.GRID_W
+        return self._grid[1]
 
     @property
     def GRID_H(self):
-        return self._grid.GRID_H
+        return self._grid[0]
