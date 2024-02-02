@@ -2,6 +2,9 @@
 import pygame
 from grid_env import GridEnvironment
 from game_factory import GameFactory
+import logging
+
+logging.basicConfig(filename='logs/stats.log', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M:%S')
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -15,7 +18,7 @@ if __name__ == '__main__':
 
 
     #Now i need to build the renderer
-    game = GameFactory(grid_size=(55, 28), num_agents=100)
+    game = GameFactory(grid_size=(30, 20), num_agents=15)
 
     running = True
     while running:

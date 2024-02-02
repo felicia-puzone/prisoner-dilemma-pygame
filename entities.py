@@ -8,8 +8,8 @@ TILE_SIZE = 25
 entity_path = os.path.join(os.getcwd(), "assets")
 
 sprite_dict = {
-    "a_agent": os.path.join(entity_path, "agent_miku.png"),
-    "b_agent": os.path.join(entity_path, "red_agent.png"),
+    "normal_agent": os.path.join(entity_path, "agent_miku.png"),
+    "contention_agent": os.path.join(entity_path, "agent_miku_contention.png"),
 }
 
 def load_img(path):
@@ -47,6 +47,10 @@ class Entity(DirtySprite):
         self.rect = Rect(
             new_loc[0] * TILE_SIZE, new_loc[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE
         )
+
+    def change_entity_state(self, entity_type):
+        self._image = transform.scale(
+                load_img(sprite_dict[entity_type]), (TILE_SIZE, TILE_SIZE))
 
     @property
     def IMAGE(self):

@@ -32,3 +32,6 @@ class Agent:
     def get_position(self):
         return self.position
 
+    def act(self):
+        pass
+
