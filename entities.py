@@ -3,7 +3,7 @@ import os
 from pygame import image, Rect, transform
 from pygame.sprite import DirtySprite
 
-TILE_SIZE = 30
+TILE_SIZE = 25
 
 entity_path = os.path.join(os.getcwd(), "assets")
 
@@ -11,8 +11,6 @@ sprite_dict = {
     "a_agent": os.path.join(entity_path, "agent_miku.png"),
     "b_agent": os.path.join(entity_path, "red_agent.png"),
 }
-
-
 
 def load_img(path):
     """

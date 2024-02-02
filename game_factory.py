@@ -3,6 +3,7 @@ from grid_env import GridEnvironment
 from entities import Entity
 from renderer import GameRenderer
 import random
+import time
 from timer import RepeatedTimer
 
 class GameFactory:
@@ -17,7 +18,7 @@ class GameFactory:
         self.init_agents()
         self.add_entities_to_renderer()
         self._renderer.update()
-        self._timer = RepeatedTimer(1, self.hello, "world")
+        self._timer = RepeatedTimer(1, self._global_random_move)
 
     #Random initialization
     def init_agents(self):
@@ -51,18 +52,110 @@ class GameFactory:
             self._renderer.list_entities.append(elem.render_entity)
 
 
+
     #Anticollision random spawn: same map as below. if not present => can spawn ----------- OK
 
-    #Random movement with anticollision
+    #Random movement with anticollision --------- OK
+
+    #Movement functions -------- OK
 
     #Contention meeting: there is a map position-agent for all the occupied positions. An agent moves and we search if the
     # 4-connectivity positions are in that map. If so, we retrieve the corresponding agent and start the contention.
 
     #Adding clock and dynamic matplotlib update
 
-    def hello(self, name):
-        print("Hello %s!" % name)
+    def _move_left(self, agent):
+        current_pos = agent.get_position()
+        new_pos = (current_pos[0] - 1, current_pos[1])
 
+        #Border checking
+        if self._grid_size[0] > new_pos[0] >= 0 and self._grid_size[1] > new_pos[1] >= 0:
+
+            #anticollision
+            if self.position_available(new_pos):
+                agent.set_position(new_pos)
+                del self._occupied_positions[current_pos]
+                self._occupied_positions.update({new_pos: agent})
+                self._renderer.update()
+            else:
+                print("position already taken")
+        else:
+            print("position out of border")
+
+    def _move_right(self, agent):
+        current_pos = agent.get_position()
+        new_pos = (current_pos[0] + 1, current_pos[1])
+
+        #Border checking
+        if self._grid_size[0] > new_pos[0] >= 0 and self._grid_size[1] > new_pos[1] >= 0:
+
+            #anticollision
+            if self.position_available(new_pos):
+                agent.set_position(new_pos)
+                del self._occupied_positions[current_pos]
+                self._occupied_positions.update({new_pos: agent})
+                self._renderer.update()
+            else:
+                print("position already taken")
+        else:
+            print("position out of border")
+
+    def _move_up(self, agent):
+        current_pos = agent.get_position()
+        new_pos = (current_pos[0], current_pos[1] - 1)
+
+        #Border checking
+        if self._grid_size[0] > new_pos[0] >= 0 and self._grid_size[1] > new_pos[1] >= 0:
+
+            #anticollision
+            if self.position_available(new_pos):
+                agent.set_position(new_pos)
+                del self._occupied_positions[current_pos]
+                self._occupied_positions.update({new_pos: agent})
+                self._renderer.update()
+            else:
+                print("position already taken")
+        else:
+            print("position out of border")
+
+    def _move_down(self, agent):
+        current_pos = agent.get_position()
+        new_pos = (current_pos[0], current_pos[1] + 1)
+
+        #Border checking
+        if self._grid_size[0] > new_pos[0] >= 0 and self._grid_size[1] > new_pos[1] >= 0:
+
+            #anticollision
+            if self.position_available(new_pos):
+                agent.set_position(new_pos)
+                del self._occupied_positions[current_pos]
+                self._occupied_positions.update({new_pos: agent})
+                self._renderer.update()
+            else:
+                print("position already taken")
+        else:
+            print("position out of border")
+
+    def _random_move(self, agent):
+        seed = random.randrange(4)
+        match seed:
+            case 0:
+                self._move_up(agent)
+            case 1:
+                self._move_down(agent)
+            case 2:
+                self._move_left(agent)
+            case 3:
+                self._move_right(agent)
+
+    def _global_random_move(self):
+        for agent in self._list_agents:
+            self._random_move(agent)
+
+
+    """
+    Contention Logic Functions
+    """
 
     def run_game(self):
         return self._renderer.render_on_display()

@@ -4,9 +4,9 @@ import pygame as pg
 Constants
 """
 BACKGROUND_COLOR = (11, 11, 69)
-GRID_LINE_COLOR = (50, 205, 50, 50)
+GRID_LINE_COLOR = (50, 205, 50, 255)
 CLEAR = (0, 0, 0, 0)
-TILE_SIZE = 30
+TILE_SIZE = 25
 
 
 class GameRenderer:
@@ -42,7 +42,7 @@ class GameRenderer:
         self._grid_layer.fill(CLEAR)
         self._draw_grid()
         #Create a layer for the entities
-        self._entity_layer = pg.Surface(game_surface_size).convert_alpha()
+        self._entity_layer = pg.Surface(game_surface_size, pg.SRCALPHA)
         self._entity_layer.fill(CLEAR)
         #Create the entities (agents)
         self.list_entities = []
@@ -62,8 +62,8 @@ class GameRenderer:
         :return:
         """
         self._screen.blit(self._background, (0, 0))
-        self._background.blit(self._grid_layer, (0, 0))
         self._background.blit(self._entity_layer, (0, 0))
+        self._background.blit(self._grid_layer, (0, 0))
         pg.display.flip()
 
 
@@ -100,7 +100,9 @@ class GameRenderer:
                 entity.IMAGE, (entity.rect.left, entity.rect.top))
 
     def update(self):
+        self._entity_layer.fill(BACKGROUND_COLOR)
         self._draw_entities()
+
 
     """
     Properties

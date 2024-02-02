@@ -24,3 +24,11 @@ class Agent:
         #movement: make a random move. Ask factory if is it ok. If true make the move.
         # Ask if there is interaction. If so, see agent and make interaction. Call entity for refresh
 
+    def set_position(self, new_pos):
+        self.position = new_pos
+
+        self.render_entity.update_rect(new_pos)
+
+    def get_position(self):
+        return self.position
+
