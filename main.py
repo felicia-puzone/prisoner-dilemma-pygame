@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
 
     #Now i need to build the renderer
-    game = GameFactory(grid_size=(30, 20), num_agents=15)
+    game = GameFactory(grid_size=(45, 30), num_agents=150, num_steps= 50)
 
     running = True
     while running:

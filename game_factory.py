@@ -1,9 +1,8 @@
-from agent import Agent, Policy
+from agent import Agent, Policy, Action
 from grid_env import GridEnvironment
 from entities import Entity
 from renderer import GameRenderer
 import random
-import time
 from timer import RepeatedTimer
 import logging
 
@@ -21,7 +20,7 @@ class GameFactory:
         self.init_agents()
         self.add_entities_to_renderer()
         self._renderer.update()
-        self._timer = RepeatedTimer(1, self.move_step)
+        self._timer = RepeatedTimer(0.5, self.move_step)
         self.global_total_score = 0
 
 
@@ -163,16 +162,19 @@ class GameFactory:
 
     def move_step(self):
 
-        self._reset_entity_state()
-        self._global_random_move()
-        logging.info('Round %d of random moving activated' % self._num_steps)
-        self.check_contentions()
-        self._renderer.update()
+        if self._num_steps != 0:
+            self._reset_entity_state()
+            self._global_random_move()
+            logging.info('Round %d of random moving activated' % self._num_steps)
+            self.check_contentions()
+            self._renderer.update()
 
-        self._num_steps = self._num_steps - 1
+            self._num_steps = self._num_steps - 1
 
-        if self._num_steps == 0:
-            self.stop_game()
+            if self._num_steps == 0:
+                self.stop_game()
+                self._print_all_scores()
+
 
     """
     Contention Logic Functions
@@ -240,7 +242,26 @@ class GameFactory:
             logging.info(i.id)
 
     def _make_contention(self, agent1, agent2):
-        logging.info("Agent %d and Agent %d had fought" % (agent1.id, agent2.id))
+
+        if agent1.act(agent2) == Action.DEFECTED and agent2.act(agent1) == Action.DEFECTED:
+            agent1.change_score(1)
+            agent2.change_score(1)
+            self.global_total_score = self.global_total_score + 2
+
+        logging.info("Agent %d and Agent %d had fought. Agent %d DEFECTED, score: %d, Agent %d DEFECTED score: %d" %
+                     (agent1.id, agent2.id, agent1.id, agent2.get_score(), agent2.id, agent2.get_score()))
+
+    def _print_all_scores(self):
+        logging.info("GLOBAL score: %d" % self.global_total_score)
+        acc = 0
+        for agent in self._list_agents:
+            logging.info("Agent %d score: %d" % (agent.id, agent.get_score()))
+            acc = acc + agent.get_score()
+        average_score = acc / self._num_agents
+        logging.info("AVERAGE AGENTS score: %d" % average_score)
+
+
+
 
     def run_game(self):
         return self._renderer.render_on_display()
