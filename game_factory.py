@@ -3,12 +3,8 @@ from grid_env import GridEnvironment
 from entities import Entity
 from renderer import GameRenderer
 import random
+from timer import RepeatedTimer
 
-thisdict =	{
-  "brand": "Ford",
-  "model": "Mustang",
-  "year": 1964
-}
 class GameFactory:
     def __init__(self, grid_size, num_agents, game_strategy = 0):
         self._num_agents = num_agents
@@ -21,11 +17,12 @@ class GameFactory:
         self.init_agents()
         self.add_entities_to_renderer()
         self._renderer.update()
+        self._timer = RepeatedTimer(1, self.hello, "world")
 
     #Random initialization
     def init_agents(self):
         for i in range(self._num_agents):
-            max_iter = 10
+            max_iter = 100
             while max_iter > 0:
                 start_position = (random.randrange(self._grid_size[0]), random.randrange(self._grid_size[1]))
                 if self.position_available(start_position):
@@ -42,7 +39,6 @@ class GameFactory:
                     max_iter = max_iter - 1
 
 
-
     def position_available(self, pos):
         if pos not in self._occupied_positions.keys():
             return True
@@ -55,14 +51,21 @@ class GameFactory:
             self._renderer.list_entities.append(elem.render_entity)
 
 
-    #Anticollision random spawn: same map as below. if not present => can spawn
+    #Anticollision random spawn: same map as below. if not present => can spawn ----------- OK
+
+    #Random movement with anticollision
 
     #Contention meeting: there is a map position-agent for all the occupied positions. An agent moves and we search if the
     # 4-connectivity positions are in that map. If so, we retrieve the corresponding agent and start the contention.
 
+    #Adding clock and dynamic matplotlib update
 
-
+    def hello(self, name):
+        print("Hello %s!" % name)
 
 
     def run_game(self):
         return self._renderer.render_on_display()
+
+    def stop_game(self):
+        self._timer.stop()

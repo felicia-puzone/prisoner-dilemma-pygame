@@ -6,13 +6,20 @@ class Policy(Enum):
     TIT_FOR_TAT = 3
     REPUTATION = 4
 
+class Action(Enum):
+    DEFECTED = 1
+    COOPERATED = 2
+    AVOIDED = 3
+
 class Agent:
-    def __init__(self, id, start_position, policy, render_entity):
+    def __init__(self, id, start_position, policy, render_entity, init_score = 0):
         self.id = id
         self.position = start_position
         self._policy = policy
         self.render_entity = render_entity
-
+        self.score = 0
+        self.reputation = 0
+        self.last_action = None
 
         #movement: make a random move. Ask factory if is it ok. If true make the move.
         # Ask if there is interaction. If so, see agent and make interaction. Call entity for refresh

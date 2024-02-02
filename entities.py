@@ -3,7 +3,7 @@ import os
 from pygame import image, Rect, transform
 from pygame.sprite import DirtySprite
 
-TILE_SIZE = 100
+TILE_SIZE = 30
 
 entity_path = os.path.join(os.getcwd(), "assets")
 

@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
 
     #Now i need to build the renderer
-    game = GameFactory(grid_size=(6, 6), num_agents=4)
+    game = GameFactory(grid_size=(45, 25), num_agents=50)
 
     running = True
     while running:
@@ -27,6 +27,7 @@ if __name__ == '__main__':
                 running = False
 
 
+    game.stop_game()
     pass
 
     """

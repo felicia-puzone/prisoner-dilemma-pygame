@@ -1,5 +1,4 @@
 import pygame as pg
-from entities import Entity
 
 """
 Constants
@@ -7,7 +6,7 @@ Constants
 BACKGROUND_COLOR = (11, 11, 69)
 GRID_LINE_COLOR = (50, 205, 50, 50)
 CLEAR = (0, 0, 0, 0)
-TILE_SIZE = 100
+TILE_SIZE = 30
 
 
 class GameRenderer:
@@ -112,15 +111,15 @@ class GameRenderer:
 
     @property
     def SCREEN_W(self):
-        return int(self._grid[1] * TILE_SIZE + 4)
+        return int(self._grid[0] * TILE_SIZE + 4)
 
     @property
     def SCREEN_H(self):
-        return int(self._grid[0] * TILE_SIZE + 4)
+        return int(self._grid[1] * TILE_SIZE + 4)
     @property
     def GRID_W(self):
-        return self._grid[1]
+        return self._grid[0]
 
     @property
     def GRID_H(self):
-        return self._grid[0]
+        return self._grid[1]
